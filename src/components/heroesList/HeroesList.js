@@ -1,8 +1,8 @@
-import {useHttp} from '../../hooks/http.hook';
+import { useHttp } from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { heroesFetching, heroesFetched, heroesFetchingError } from '../../actions';
+import { heroesFetching, heroesFetched, heroesFetchingError, deleteHero } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 
@@ -11,11 +11,16 @@ import Spinner from '../spinner/Spinner';
 // Усложненная задача:
 // Удаление идет и с json файла при помощи метода DELETE
 
-const HeroesList = () => {
-    const {heroes, heroesLoadingStatus} = useSelector(state => state);
-    const dispatch = useDispatch();
-    const {request} = useHttp();
 
+const HeroesList = () => {
+    // useSelector дає доступ до потрібного СТАНУ. 
+    const { heroes, heroesLoadingStatus } = useSelector(state => state);
+    // useDispatch відправляє ACTIONS у сховище Redux 
+    const dispatch = useDispatch();
+    const { request } = useHttp();
+
+
+    // Перше формування списку героїв з БД
     useEffect(() => {
         dispatch(heroesFetching());
         request("http://localhost:3001/heroes")
@@ -26,9 +31,14 @@ const HeroesList = () => {
     }, []);
 
     if (heroesLoadingStatus === "loading") {
-        return <Spinner/>;
+        return <Spinner />;
     } else if (heroesLoadingStatus === "error") {
         return <h5 className="text-center mt-5">Ошибка загрузки</h5>
+    }
+
+
+    const removeHeroFromState = (id) => {
+        dispatch(deleteHero(id))
     }
 
     const renderHeroesList = (arr) => {
@@ -36,8 +46,8 @@ const HeroesList = () => {
             return <h5 className="text-center mt-5">Героев пока нет</h5>
         }
 
-        return arr.map(({id, ...props}) => {
-            return <HeroesListItem key={id} {...props}/>
+        return arr.map(({ id, ...props }) => {
+            return <HeroesListItem key={id} id={id} remove={removeHeroFromState} {...props} />
         })
     }
 

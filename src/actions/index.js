@@ -16,3 +16,9 @@ export const heroesFetchingError = () => {
         type: 'HEROES_FETCHING_ERROR'
     }
 }
+export const deleteHero = (heroId) => {
+    return {
+        type: 'DELETE_HERO',
+        payload: heroId
+    }
+}

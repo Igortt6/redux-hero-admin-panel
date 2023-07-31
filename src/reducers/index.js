@@ -4,6 +4,8 @@ const initialState = {
     filters: []
 }
 
+
+// Правила для назви АКТІОН: Завжди писати у верхньому регістрі, через _ 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'HEROES_FETCHING':
@@ -21,6 +23,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 heroesLoadingStatus: 'error'
+            }
+        case 'DELETE_HERO':
+            return {
+                ...state,
+                heroes: state.heroes.filter((hero) => hero.id !== action.payload)
             }
         default: return state
     }
