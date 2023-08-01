@@ -20,10 +20,30 @@
         }
     ],
     "filters": [
-        "all",
-        "fire",
-        "water",
-        "wind",
-        "earth"
+        {
+            "id": "all",
+            "lable": "Я володію елементом...",
+            "className": "btn btn-outline-dark"
+        },
+        {
+            "id": "fire",
+            "lable": "Вогонь",
+            "className": "btn btn-danger"
+        },
+        {
+            "id": "water",
+            "lable": "Вода",
+            "className": "btn btn-primary"
+        },
+        {
+            "id": "wind",
+            "lable": "Вітер",
+            "className": "btn btn-success"
+        },
+        {
+            "id": "earth",
+            "lable": "Земля",
+            "className": "btn btn-secondary"
+        }
     ]
 }

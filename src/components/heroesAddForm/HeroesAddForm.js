@@ -1,4 +1,7 @@
 
+import { useSelector } from "react-redux";
+import Spinner from "../spinner/Spinner";
+
 
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
@@ -11,42 +14,57 @@
 // данных из фильтров
 
 const HeroesAddForm = () => {
+
+    const { filters, filterLoadingStatus } = useSelector(state => state)
+
+
+    const renderFiltersList = (arr) => {
+        if (filterLoadingStatus === "loading") {
+            return <option>Завантаження елементів</option>
+        } else if (filterLoadingStatus === "error") {
+            return <option>Помилка завантаження</option>
+        }
+
+        return arr.map(({ id, lable }) => {
+            if (id === 'all') return
+            return <option
+                key={id}
+                id={id}>{lable} </option>
+        })
+    }
+
     return (
         <form className="border p-4 shadow-lg rounded">
             <div className="mb-3">
                 <label htmlFor="name" className="form-label fs-4">Имя нового героя</label>
-                <input 
+                <input
                     required
-                    type="text" 
-                    name="name" 
-                    className="form-control" 
-                    id="name" 
-                    placeholder="Как меня зовут?"/>
+                    type="text"
+                    name="name"
+                    className="form-control"
+                    id="name"
+                    placeholder="Как меня зовут?" />
             </div>
 
             <div className="mb-3">
                 <label htmlFor="text" className="form-label fs-4">Описание</label>
                 <textarea
                     required
-                    name="text" 
-                    className="form-control" 
-                    id="text" 
+                    name="text"
+                    className="form-control"
+                    id="text"
                     placeholder="Что я умею?"
-                    style={{"height": '130px'}}/>
+                    style={{ "height": '130px' }} />
             </div>
 
             <div className="mb-3">
                 <label htmlFor="element" className="form-label">Выбрать элемент героя</label>
-                <select 
+                <select
                     required
-                    className="form-select" 
-                    id="element" 
+                    className="form-select"
+                    id="element"
                     name="element">
-                    <option >Я владею элементом...</option>
-                    <option value="fire">Огонь</option>
-                    <option value="water">Вода</option>
-                    <option value="wind">Ветер</option>
-                    <option value="earth">Земля</option>
+                    {renderFiltersList(filters)}
                 </select>
             </div>
 
