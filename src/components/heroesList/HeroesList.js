@@ -7,13 +7,26 @@ import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './heroesList.scss'
-
-// Усложненная задача:
-// Удаление идет и с json файла при помощи метода DELETE
-
+import { createSelector } from '@reduxjs/toolkit';
 
 const HeroesList = () => {
-    const { filteredHeroes, heroesLoadingStatus } = useSelector(state => state);
+
+
+    // Функуція СЕЛЕКТОР  (функція яка повертає шматок СТЕЙТу). createSelector - мемоізує значення
+    const filteredHeroesSelector = createSelector(
+        (state) => state.filters.activeFilter,
+        (state) => state.heroes.heroes,
+        (filter, heroes) => {
+            if (filter === 'all') {
+                return heroes
+            } else {
+                return heroes.filter(item => item.element === filter)
+            }
+        }
+    );
+
+    const filteredHeroes = useSelector(filteredHeroesSelector)
+    const heroesLoadingStatus = useSelector(state => state.heroes.heroesLoadingStatus);
     const dispatch = useDispatch();
     const { request } = useHttp();
 
@@ -50,8 +63,8 @@ const HeroesList = () => {
 
         return arr.map(({ ...props }) => {
             return (
-                <CSSTransition classNames="hero" timeout={500} >
-                    <HeroesListItem key={props.id} remove={onRemoveHeroFromState} {...props} />
+                <CSSTransition key={props.id} classNames="hero" timeout={500} >
+                    <HeroesListItem remove={onRemoveHeroFromState} {...props} />
                 </CSSTransition>)
         })
     }
