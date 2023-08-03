@@ -72,7 +72,7 @@ const reducer = (state = initialState, action) => {
                 activeFilter: action.payload,
                 filteredHeroes: action.payload === 'all' ?
                     state.heroes :
-                    state.heroes.filter(item => item.element === state.activeFilter),
+                    state.heroes.filter(item => item.element === action.payload),
             }
         default: return state
     }

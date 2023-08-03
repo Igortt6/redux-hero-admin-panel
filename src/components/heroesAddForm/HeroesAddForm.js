@@ -19,7 +19,7 @@ const HeroesAddForm = () => {
     const { filters, filterLoadingStatus } = useSelector(state => state);
     const dispatch = useDispatch();
 
-    const [hero, setHero] = useState({ id: '', name: '', description: '', element: 'Вогонь' });
+    const [hero, setHero] = useState({ id: '', name: '', description: '', element: 'fire' });
 
     const onSubmitNewHero = (e) => {
         e.preventDefault();
@@ -33,7 +33,7 @@ const HeroesAddForm = () => {
         dispatch(addHero(newHero));
 
         //видаляємо донні з форми
-        setHero({ name: '', description: '', element: 'Вогонь' })
+        setHero({ name: '', description: '', element: 'fire' })
     }
 
     const renderFiltersList = (filter, status) => {
@@ -47,7 +47,7 @@ const HeroesAddForm = () => {
             if (id === 'all') return
             return <option
                 key={id}
-                id={id}>{lable} </option>
+                id={id} value={id} >{lable}</option>
         })
     }
 
@@ -88,8 +88,7 @@ const HeroesAddForm = () => {
                     id="element"
                     name="element"
                     value={hero.element}
-                    onChange={e => setHero({ ...hero, element: e.target.value })}
-                >
+                    onChange={e => setHero({ ...hero, element: e.target.value })}>
                     {renderFiltersList(filters, filterLoadingStatus)}
                 </select>
             </div>

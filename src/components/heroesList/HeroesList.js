@@ -24,6 +24,7 @@ const HeroesList = () => {
         // eslint-disable-next-line
     }, []);
 
+
     // Створюємо REDUCER для обробки видалення героя зі стейту. Створюємо ACTION для REDUCERу. Передаєто цю функцію до HeroesListItem. Там викликаємо по кліку, з передачею ID. useCallback ОБОВʼЯЗКОВО передаєто для запобігання перерендеру дочірнього компоненту (оскільки ми передаєто мю функцію як пропс)
     const onRemoveHeroFromState = useCallback((id) => {
         dispatch(deleteHero(id))
