@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { heroesFetching, heroesFetched, heroesFetchingError, deleteHero } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import './heroesList.scss'
 
 // Усложненная задача:
 // Удаление идет и с json файла при помощи метода DELETE
@@ -39,18 +41,27 @@ const HeroesList = () => {
 
     const renderHeroesList = (arr) => {
         if (arr.length === 0) {
-            return <h5 className="text-center mt-5">Героев пока нет</h5>
+            return (
+                <CSSTransition classNames="hero" timeout={0} >
+                    <h5 className="text-center mt-5">Героев пока нет</h5>
+                </CSSTransition>
+            )
         }
 
         return arr.map(({ ...props }) => {
-            return <HeroesListItem key={props.id} remove={onRemoveHeroFromState} {...props} />
+            return (
+                <CSSTransition classNames="hero" timeout={500} >
+                    <HeroesListItem key={props.id} remove={onRemoveHeroFromState} {...props} />
+                </CSSTransition>)
         })
     }
 
     const elements = renderHeroesList(filteredHeroes);
     return (
         <ul>
-            {elements}
+            <TransitionGroup>
+                {elements}
+            </TransitionGroup>
         </ul>
     )
 }
