@@ -1,6 +1,9 @@
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../spinner/Spinner";
+import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+import { addHero } from "../../actions";
 
 
 // Задача для этого компонента:
@@ -10,22 +13,37 @@ import Spinner from "../spinner/Spinner";
 // Усложненная задача:
 // Персонаж создается и в файле json при помощи метода POST
 // Дополнительно:
-// Элементы <option></option> желательно сформировать на базе
-// данных из фильтров
+
 
 const HeroesAddForm = () => {
+    const { filters, filterLoadingStatus } = useSelector(state => state);
+    const dispatch = useDispatch();
 
-    const { filters, filterLoadingStatus } = useSelector(state => state)
+    const [hero, setHero] = useState({ id: '', name: '', description: '', element: 'Вогонь' });
 
+    const onSubmitNewHero = (e) => {
+        e.preventDefault();
+        const newHero = {
+            id: uuidv4(),
+            name: hero.name,
+            description: hero.description,
+            element: hero.element
+        }
+        // відправляєто форму
+        dispatch(addHero(newHero));
 
-    const renderFiltersList = (arr) => {
-        if (filterLoadingStatus === "loading") {
+        //видаляємо донні з форми
+        setHero({ name: '', description: '', element: 'Вогонь' })
+    }
+
+    const renderFiltersList = (filter, status) => {
+        if (status === "loading") {
             return <option>Завантаження елементів</option>
-        } else if (filterLoadingStatus === "error") {
+        } else if (status === "error") {
             return <option>Помилка завантаження</option>
         }
 
-        return arr.map(({ id, lable }) => {
+        return filter.map(({ id, lable }) => {
             if (id === 'all') return
             return <option
                 key={id}
@@ -34,7 +52,8 @@ const HeroesAddForm = () => {
     }
 
     return (
-        <form className="border p-4 shadow-lg rounded">
+        <form className="border p-4 shadow-lg rounded" onSubmit={onSubmitNewHero}
+        >
             <div className="mb-3">
                 <label htmlFor="name" className="form-label fs-4">Имя нового героя</label>
                 <input
@@ -43,6 +62,8 @@ const HeroesAddForm = () => {
                     name="name"
                     className="form-control"
                     id="name"
+                    value={hero.name}
+                    onChange={e => setHero({ ...hero, name: e.target.value })}
                     placeholder="Как меня зовут?" />
             </div>
 
@@ -54,6 +75,8 @@ const HeroesAddForm = () => {
                     className="form-control"
                     id="text"
                     placeholder="Что я умею?"
+                    value={hero.description}
+                    onChange={e => setHero({ ...hero, description: e.target.value })}
                     style={{ "height": '130px' }} />
             </div>
 
@@ -63,12 +86,18 @@ const HeroesAddForm = () => {
                     required
                     className="form-select"
                     id="element"
-                    name="element">
-                    {renderFiltersList(filters)}
+                    name="element"
+                    value={hero.element}
+                    onChange={e => setHero({ ...hero, element: e.target.value })}
+                >
+                    {renderFiltersList(filters, filterLoadingStatus)}
                 </select>
             </div>
 
-            <button type="submit" className="btn btn-primary">Создать</button>
+            <button
+                type="submit"
+                className="btn btn-primary"
+            >Создать</button>
         </form>
     )
 }

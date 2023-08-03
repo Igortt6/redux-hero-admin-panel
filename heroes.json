@@ -22,7 +22,7 @@
     "filters": [
         {
             "id": "all",
-            "lable": "Я володію елементом...",
+            "lable": "Всі",
             "className": "btn btn-outline-dark"
         },
         {

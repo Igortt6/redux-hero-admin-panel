@@ -23,6 +23,13 @@ export const deleteHero = (heroId) => {
     }
 }
 
+export const addHero = (heroId) => {
+    return {
+        type: 'ADD_HERO',
+        payload: heroId
+    }
+}
+
 export const filtersFetching = () => {
     return {
         type: 'FILTERS_FETCHING'
@@ -41,3 +48,11 @@ export const filtersFetchingError = () => {
         type: 'FILTERS_FETCHING_ERROR'
     }
 }
+
+export const activeFilter = (filter) => {
+    return {
+        type: 'ACTIVE_FILTER',
+        payload: filter
+    }
+}
+
