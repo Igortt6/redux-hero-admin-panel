@@ -5,9 +5,10 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { useHttp } from "../../hooks/http.hook";
-import { fetchFilters, activeFilter } from "../../actions";
 import { useEffect } from "react";
 import Spinner from "../spinner/Spinner";
+import { fetchFilters } from "../../actions";
+import { activeFilter } from "./filtersSlice";
 
 const HeroesFilters = () => {
     const { filters, filterLoadingStatus, filterAcriveClass } = useSelector(state => state.filters);
@@ -32,6 +33,7 @@ const HeroesFilters = () => {
 
     // Формуємо кнопки для фільтрів динамічно, по запиту з БД. Додавання классу Active по кліку.
     const renderFilters = (arr) => {
+
         if (arr.length === 0) {
             return <h5 className="text-center mt-5">Немає фільтрів</h5>
         }

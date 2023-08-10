@@ -2,12 +2,13 @@ import { useHttp } from '../../hooks/http.hook';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchHeroes, deleteHero } from '../../actions';
+import { fetchHeroes } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './heroesList.scss'
 import { createSelector } from '@reduxjs/toolkit';
+import { heroDeleted } from './heroesSlice';
 
 const HeroesList = () => {
 
@@ -33,13 +34,14 @@ const HeroesList = () => {
 
     useEffect(() => {
         dispatch(fetchHeroes(request));
+
         // eslint-disable-next-line
     }, []);
 
 
     // Створюємо REDUCER для обробки видалення героя зі стейту. Створюємо ACTION для REDUCERу. Передаєто цю функцію до HeroesListItem. Там викликаємо по кліку, з передачею ID. useCallback ОБОВʼЯЗКОВО передаєто для запобігання перерендеру дочірнього компоненту (оскільки ми передаєто мю функцію як пропс)
     const onRemoveHeroFromState = useCallback((id) => {
-        dispatch(deleteHero(id))
+        dispatch(heroDeleted(id))
     }, [request])
 
     if (heroesLoadingStatus === "loading") {

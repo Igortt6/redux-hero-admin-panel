@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../spinner/Spinner";
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { addHero } from "../../actions";
+import { heroAdd } from "../heroesList/heroesSlice";
 
 
 // Задача для этого компонента:
@@ -30,7 +30,7 @@ const HeroesAddForm = () => {
             element: hero.element
         }
         // відправляєто форму
-        dispatch(addHero(newHero));
+        dispatch(heroAdd(newHero));
 
         //видаляємо донні з форми
         setHero({ name: '', description: '', element: 'fire' })
