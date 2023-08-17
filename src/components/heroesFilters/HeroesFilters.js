@@ -4,13 +4,15 @@
 // Фильтры должны отображать только нужных героев при выборе
 
 import { useDispatch, useSelector } from "react-redux";
-import { useHttp } from "../../hooks/http.hook";
 import { useEffect } from "react";
 import Spinner from "../spinner/Spinner";
-import { activeFilter, fetchFilters } from "./filtersSlice";
+import { activeFilter, fetchFilters, selectAll } from "./filtersSlice";
+import store from '../../store';
 
 const HeroesFilters = () => {
-    const { filters, filterLoadingStatus, filterAcriveClass } = useSelector(state => state.filters);
+
+    const { filterLoadingStatus, filterAcriveClass } = useSelector(state => state.filters);
+    const filters = selectAll(store.getState())
     const dispatch = useDispatch();
 
 

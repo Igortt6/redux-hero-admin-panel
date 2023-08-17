@@ -4,6 +4,8 @@ import Spinner from "../spinner/Spinner";
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { heroAdd } from "../heroesList/heroesSlice";
+import { selectAll } from "../heroesFilters/filtersSlice";
+import store from "../../store";
 
 
 // Задача для этого компонента:
@@ -16,7 +18,8 @@ import { heroAdd } from "../heroesList/heroesSlice";
 
 
 const HeroesAddForm = () => {
-    const { filters, filterLoadingStatus } = useSelector(state => state.filters);
+    const { filterLoadingStatus } = useSelector(state => state.filters);
+    const filters = selectAll(store.getState());
     const dispatch = useDispatch();
 
     const [hero, setHero] = useState({ id: '', name: '', description: '', element: 'fire' });

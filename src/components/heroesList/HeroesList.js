@@ -6,24 +6,12 @@ import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './heroesList.scss'
-import { createSelector } from '@reduxjs/toolkit';
-import { fetchHeroes, heroDeleted } from './heroesSlice';
+import { fetchHeroes, filteredHeroesSelector, heroDeleted, } from './heroesSlice';
 
 const HeroesList = () => {
 
 
-    // Функуція СЕЛЕКТОР  (функція яка повертає шматок СТЕЙТу). createSelector - мемоізує значення
-    const filteredHeroesSelector = createSelector(
-        (state) => state.filters.activeFilter,
-        (state) => state.heroes.heroes,
-        (filter, heroes) => {
-            if (filter === 'all') {
-                return heroes
-            } else {
-                return heroes.filter(item => item.element === filter)
-            }
-        }
-    );
+
 
     const filteredHeroes = useSelector(filteredHeroesSelector)
     const heroesLoadingStatus = useSelector(state => state.heroes.heroesLoadingStatus);
